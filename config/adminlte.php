@@ -312,18 +312,34 @@ return [
             'icon' => 'fas fa-shopping-cart',
         ],
         [
+            'text' => 'Documentos',
+            'url' => 'documentos',
+            'icon' => 'fas fa-folder',
+        ],
+        [
             'text' => 'Productos',
             'url' => 'productos',
             'icon' => 'fas fa-file-alt',
         ],
         [
             'text' => 'Reportes',
-            'url' => 'admin/settings',
             'icon' => 'fas fa-chart-pie',
+            'submenu' => [
+                [
+                    'text' => 'Productos más vendidos',
+                    'url' => 'reporteproductos',
+                    'icon' => 'fas fa-play'
+                ],
+                 [
+                    'text' => 'Ventas por usuario',
+                    'url' => 'reporteusuarios',
+                    'icon' => 'fas fa-play'
+                ],
+            ]
         ],
         [
             'text' => 'Usuarios',
-            'url' => 'admin/settings',
+            'url' => 'users',
             'icon' => 'fas fa-users',
         ],
         [
@@ -335,31 +351,7 @@ return [
                     'url' => '#',
                 ],
                 [
-                    'text' => 'level_one',
-                    'url' => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                        ],
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
+                    'text' => 'level_two',
                     'url' => '#',
                 ],
             ],
