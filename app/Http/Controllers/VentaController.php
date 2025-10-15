@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Venta;
+use App\Models\VentaItem;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
+
 
 class VentaController extends Controller
 {
@@ -34,18 +39,73 @@ class VentaController extends Controller
      */
     public function store(Request $request)
     {
-        // 1. Validación de los datos
-        $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'total' => 'required|numeric|min:0',
-            'estado' => 'sometimes|string|in:pendiente,finalizada,cancelada',
-            'observaciones' => 'nullable|string|max:500',
-        ]);
+        // 1. VALIDACIÓN
+        try {
+            $request->validate([
+                'subtotal' => 'required|numeric|min:0',
+                'iva' => 'required|numeric|min:0',
+                'total' => 'required|numeric|min:0',
+                'tipo_pago' => 'required|in:efectivo,debito,credito,transferencia',
+                'requiere_despacho' => 'required|boolean',
+                'cliente_despacho_id' => 'nullable|exists:cliente_despachos,id',
+                'items' => 'required|array|min:1',
+                'items.*.sku' => 'required|string|max:50',
+                'items.*.nombre' => 'required|string|max:255',
+                'items.*.cantidad' => 'required|integer|min:1',
+                'items.*.precio_unitario' => 'required|numeric|min:0.01',
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error de validación: ' . $e->getMessage(),
+                'errors' => $e->errors()
+            ], 422);
+        }
 
-        // 2. Creación de la venta
-        Venta::create($validatedData);
+        // 2. INICIAR TRANSACCIÓN (Asegura que todo se guarde o nada)
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('ventas.index')->with('success', 'Venta creada exitosamente.');
+            // A. Guardar Venta Principal
+            $venta = Venta::create([
+                'user_id' => auth()->id(), // Asume que el usuario autenticado es el vendedor
+                'subtotal' => $request->subtotal,
+                'iva' => $request->iva,
+                'total' => $request->total,
+                'tipo_pago' => $request->tipo_pago,
+                'requiere_despacho' => $request->requiere_despacho,
+                'cliente_despacho_id' => $request->cliente_despacho_id,
+            ]);
+
+            // B. Preparar y Guardar Venta Items
+            $itemsData = array_map(function($item) use ($venta) {
+                return [
+                    'venta_id' => $venta->id,
+                    'sku' => $item['sku'],
+                    'nombre_producto' => $item['nombre'],
+                    'cantidad' => $item['cantidad'],
+                    'precio_unitario' => $item['precio_unitario'],
+                    'subtotal' => $item['cantidad'] * $item['precio_unitario'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }, $request->items);
+
+            VentaItem::insert($itemsData);
+
+            // C. (FUTURO) Descontar stock de la tabla 'productos'
+
+            DB::commit();
+
+            $venta->load(['items', 'clienteDespacho']);
+            $pdf = Pdf::loadView('boletas.pdf_boleta', compact('venta'));
+
+            return $pdf->download('boleta-' . $venta->id . '.pdf');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Error interno al guardar la transacción.'], 500);
+        }
     }
 
     /**

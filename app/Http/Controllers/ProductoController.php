@@ -97,4 +97,21 @@ class ProductoController extends Controller
 
         return redirect()->route('productos.index')->with('success', 'Producto eliminado exitosamente.');
     }
+
+    public function buscar(Request $request)
+    {
+        $query = $request->input('search');
+
+        if (empty($query) || strlen($query) < 2) {
+            return response()->json([]);
+        }
+
+        $productos = Producto::where('sku', 'like', "%{$query}%")
+            ->orWhere('nombre_producto', 'like', "%{$query}%")
+            ->where('tipo_producto', '!=', 'granel') // Ejemplo: excluimos granel de la búsqueda simple
+            ->limit(10) // Limita el número de resultados
+            ->get(['sku', 'nombre_producto', 'precio_venta']); // Solo los campos que necesitamos
+
+        return response()->json($productos);
+    }
 }

@@ -20,7 +20,7 @@
                 >
                 
                 <div id="resultados-busqueda" class="dropdown-menu" style="width: 100%; display: none;">
-                    <a class="dropdown-item" href="#">Producto 1 ($100.00)</a>
+                    <a class="dropdown-item" href="#">Producto 1 ($100)</a>
                 </div>
             </div>
 
@@ -35,33 +35,9 @@
                     </tr>
                 </thead>
                 <tbody id="cuerpo-tabla-productos">
-                    <tr id="fila-P001" data-price="350">
-                        <td class="col-sku">P001</td>
-                        <td>Monitor 27" 4K</td>
-                        <td class="col-precio">
-                            <input type="number" value="350" min="1" step="1" class="input-precio" data-id="P001">
-                        </td>
-                        <td class="col-cantidad">
-                            <input type="number" value="2" min="1" class="input-cantidad" data-id="P001">
-                        </td>
-                        <td class="col-total" id="total-P001">700</td>
-                    </tr>
-                    
-                    <tr id="fila-P003" data-price="99.50">
-                        <td class="col-sku">P003</td>
-                        <td>Disco SSD 1TB NVMe</td>
-                        <td class="col-precio">
-                            <input type="number" value="99" min="1" step="1" class="input-precio" data-id="P003">
-                        </td>
-                        <td class="col-cantidad">
-                            <input type="number" value="1" min="1" class="input-cantidad" data-id="P003">
-                        </td>
-                        <td class="col-total" id="total-P003">99</td>
-                    </tr>
-
                     <tr id="fila-resumen">
                         <td colspan="4" style="text-align: right; font-weight: bold;">SUBTOTAL:</td>
-                        <td class="col-total" style="font-weight: bold;" id="subtotal-general">799.50</td>
+                        <td class="col-total" style="font-weight: bold;" id="subtotal-general">0</td>
                     </tr>
                 </tbody>
             </table>
@@ -72,19 +48,151 @@
     
             <div class="resumen-item">
                 <span class="label">Subtotal (Neto):</span>
-                <span class="valor" id="resumen-subtotal">0.00</span>
+                <span class="valor" id="resumen-subtotal">0</span>
             </div>
             
             <div class="resumen-item">
                 <span class="label">IVA (19%):</span>
-                <span class="valor" id="resumen-iva">0.00</span>
+                <span class="valor" id="resumen-iva">0</span>
             </div>
             
             <hr>
             
             <div class="resumen-item total-final">
                 <span class="label">TOTAL A PAGAR:</span>
-                <span class="valor" id="resumen-total">0.00</span>
+                <span class="valor" id="resumen-total">0</span>
+            </div>
+            
+            <hr class="mt-4">
+
+            <div class="opciones-venta">
+                <h3>Opciones Adicionales</h3>
+                
+                <div class="despacho-radiobox mb-3">
+                    <label class="d-block mb-2">¿Requiere Despacho?</label>
+                    
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="opcionDespacho" id="despachoSi" value="si">
+                        <label class="form-check-label" for="despachoSi">Sí</label>
+                    </div>
+                    
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="opcionDespacho" id="despachoNo" value="no" checked>
+                        <label class="form-check-label" for="despachoNo">No</label>
+                    </div>
+                    
+                    <small class="form-text text-muted mt-2">Selecciona si la venta incluye entrega a domicilio.</small>
+                     <button id="btn-cliente" class="btn btn-primary btn-lg btn-block mt-4">
+                        Agregar Cliente
+                    </button>
+                </div>
+            </div>
+            
+            <button id="btn-pagar" class="btn btn-primary btn-lg btn-block mt-4">
+                PAGAR
+            </button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalClienteDespacho" tabindex="-1" role="dialog" aria-labelledby="modalClienteLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalClienteLabel">Datos del Cliente para Despacho</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-cliente-despacho">
+                        
+                        <div class="form-group mb-3">
+                            <label for="buscarCliente">Buscar Cliente Existente (RUT/Nombre):</label>
+                            <input type="text" class="form-control" id="buscarCliente" placeholder="Comienza a escribir para buscar...">
+                            <small class="form-text text-muted">Si el cliente no existe, ingresa sus datos a continuación.</small>
+                        </div>
+
+                        <hr>
+                        
+                        <div class="form-group mb-3">
+                            <label for="nombreCliente">Nombre Completo *</label>
+                            <input type="text" class="form-control" id="nombreCliente" required>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="rutCliente">RUT/ID Fiscal *</label>
+                            <input type="text" class="form-control" id="rutCliente" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="direccionCliente">Dirección de Despacho *</label>
+                            <input type="text" class="form-control" id="direccionCliente" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="telefonoCliente">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefonoCliente">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarCliente">Guardar Datos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalMetodoPago" tabindex="-1" role="dialog" aria-labelledby="modalMetodoPagoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalMetodoPagoLabel">Seleccionar Método de Pago</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Total a pagar: <strong id="pago-total-display">$0</strong></p>
+                    <hr>
+
+                    <div class="form-group">
+                        <label>Seleccione el método de pago:</label>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="metodoPago" id="pagoEfectivo" value="efectivo" checked>
+                            <label class="form-check-label" for="pagoEfectivo">
+                                Efectivo 💵
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="metodoPago" id="pagoDebito" value="debito">
+                            <label class="form-check-label" for="pagoDebito">
+                                Tarjeta de Débito 💳
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="metodoPago" id="pagoCredito" value="credito">
+                            <label class="form-check-label" for="pagoCredito">
+                                Tarjeta de Crédito 💳
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="metodoPago" id="pagoTransferencia" value="transferencia">
+                            <label class="form-check-label" for="pagoTransferencia">
+                                Transferencia Bancaria 🏦
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="btnConfirmarPago">Confirmar Venta</button>
+                </div>
             </div>
         </div>
     </div>
@@ -222,18 +330,34 @@
             border-top: 1px dashed #ccc;
             margin: 15px 0;
         }
+        .columna-secundaria h3 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        #btn-pagar, #btn-cliente {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        /* Simulación de clases de Bootstrap: d-block, form-check-input, etc. */
+        .d-block { display: block; } 
+        .form-check-inline { display: inline-block; margin-right: 1rem; }
+        .btn-primary { 
+            background-color: #007bff; 
+            border-color: #007bff; 
+            color: white; 
+            cursor: pointer;
+        }
+        .btn-lg { padding: .5rem 1rem; }
     </style>
 @stop
 
 @section('js')
     <script>
-        const productosSimulados = [
-            { sku: 'P001', nombre: 'Monitor 27" 4K', precio: 350 },
-            { sku: 'P002', nombre: 'Teclado Mecánico RGB', precio: 75 },
-            { sku: 'P003', nombre: 'Disco SSD 1TB NVMe', precio: 99 },
-            { sku: 'P004', nombre: 'Webcam Full HD', precio: 45 },
-            { sku: 'P005', nombre: 'Mouse Inalámbrico', precio: 25 }
-        ];
+        let productosEnVenta = []; 
 
         const IVA_RATE = 0.19; // 19% de IVA
         const subtotalTablaElemento = document.getElementById('subtotal-general');
@@ -248,14 +372,8 @@
 
         let inputBusqueda;
         let resultadosDiv;
-
         let subtotalVenta = 0;
-        const productosEjemplo = [
-            { sku: 'P001', nombre: 'Monitor 27" 4K', precio: 350 },
-            { sku: 'P002', nombre: 'Teclado Mecánico RGB', precio: 75 },
-            { sku: 'P003', nombre: 'Disco SSD 1TB NVMe', precio: 99 },
-            { sku: 'P004', nombre: 'Webcam Full HD', precio: 45 }
-        ];
+
         function calcularTotalProducto(idProducto) {
             // 1. Obtener los inputs específicos de la fila
             const inputPrecio = document.querySelector(`.input-precio[data-id="${idProducto}"]`);
@@ -280,7 +398,17 @@
             const totalLinea = precio * cantidad;
             totalCelda.textContent = totalLinea.toFixed(0);
 
-            // 4. Recalcular el Subtotal General
+            const productoAActualizar = productosEnVenta.find(
+                producto => producto.sku === idProducto
+            );
+
+            if (productoAActualizar) {
+                productoAActualizar.cantidad = cantidad;
+                console.log(`Cantidad actualizada para SKU ${idProducto}. Nueva cantidad: ${cantidad}`);
+            } else {
+                console.warn(`Producto con SKU ${idProducto} no encontrado en el array de ventas.`);
+            }
+
             recalcularSubtotalGeneral();
         }
 
@@ -374,20 +502,36 @@
             inicializarEventosCalculo(); 
         }
 
-        function buscarProductos(textoBusqueda) {
+        async function buscarProductos(textoBusqueda) {
             const texto = textoBusqueda.toLowerCase().trim();
-            
+    
             if (texto.length < 2) {
                 resultadosDiv.style.display = 'none';
+                resultadosDiv.classList.remove('show');
                 return;
             }
 
-            // Filtrar los productos simulados (Lógica de búsqueda en el frontend)
-            const resultados = productosSimulados.filter(p => 
-                p.nombre.toLowerCase().includes(texto) || p.sku.toLowerCase().includes(texto)
-            );
-            
-            mostrarResultados(resultados);
+            try {
+                // Construye la URL con el texto de búsqueda como parámetro
+                const url = `/producto/buscar?search=${encodeURIComponent(texto)}`;
+                
+                // Realiza la petición GET al endpoint de Laravel
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const resultados = await response.json();
+                
+                mostrarResultados(resultados);
+
+            } catch (error) {
+                console.error("Error al buscar productos:", error);
+                resultadosDiv.innerHTML = '<a class="dropdown-item disabled text-danger">Error de conexión con el servidor.</a>';
+                resultadosDiv.style.display = 'block';
+                resultadosDiv.classList.add('show');
+            }
         }
 
         /**
@@ -408,12 +552,12 @@
                 const item = document.createElement('a');
                 item.classList.add('dropdown-item');
                 item.href = '#';
-                item.textContent = `${producto.sku} - ${producto.nombre} (${producto.precio.toFixed(2)})`;
+                item.textContent = `${producto.sku} - ${producto.nombre_producto} (${producto.precio_venta.toFixed(0)})`;
                 
                 // Asignar los datos del producto al elemento para usarlos al hacer clic
                 item.dataset.sku = producto.sku;
-                item.dataset.nombre = producto.nombre;
-                item.dataset.precio = producto.precio;
+                item.dataset.nombre = producto.nombre_producto;
+                item.dataset.precio = producto.precio_venta;
 
                 // Adjuntar el evento de clic para agregar el producto a la tabla
                 item.addEventListener('click', manejarClickProducto);
@@ -437,13 +581,32 @@
             const precio = parseFloat(item.dataset.precio);
             const cantidadInicial = 1; // Siempre agregar con cantidad 1 por defecto
 
+            const productoExistente = productosEnVenta.find(p => p.sku === sku);
+
+            if (productoExistente) {
+                // Si ya existe, incrementamos la cantidad
+                productoExistente.cantidad += cantidadInicial;
+                // FUTURO: Debes actualizar la fila de la tabla en el DOM aquí.
+                console.log(`Producto ${nombre} ya estaba en la lista. Cantidad incrementada.`);
+            } else {
+                // Si es nuevo, lo agregamos al array
+                productosEnVenta.push({
+                    sku: sku,
+                    nombre: nombre,
+                    precio_unitario: precio,
+                    cantidad: cantidadInicial
+                });
+                
+                // 2. Llamar a la función que agrega la fila a la tabla (DOM)
+                agregarProductoATabla(sku, nombre, precio, cantidadInicial); 
+            }
+
             // Ocultar los resultados de búsqueda
             resultadosDiv.style.display = 'none';
             resultadosDiv.classList.remove('show');
             inputBusqueda.value = ''; // Limpiar el input
 
             // Llamar a la función que agrega la fila a la tabla (función definida anteriormente)
-            agregarProductoATabla(sku, nombre, precio, cantidadInicial);
         }
 
         
@@ -471,6 +634,165 @@
             // agregarProductoATabla(productoNuevo.sku, productoNuevo.nombre, productoNuevo.precio, 3);
 
             inicializarEventosCalculo();
+
+            const btnPagar = document.getElementById('btn-pagar');
+            const modalMetodoPago = $('#modalMetodoPago'); 
+            const radioDespachoSi = document.getElementById('despachoSi');
+            const radioDespachoNo = document.getElementById('despachoNo');
+
+            const btnCliente = document.getElementById('btn-cliente');
+            const radiosDespacho = document.getElementsByName('opcionDespacho');
+            
+            function actualizarBotonCliente() {
+                const requiereDespacho = document.getElementById('despachoSi').checked;
+                
+                if (requiereDespacho) {
+                    btnCliente.disabled = false;
+                    btnCliente.classList.remove('btn-outline-secondary');
+                    btnCliente.classList.add('btn-info');
+                } else {
+                    btnCliente.disabled = true;
+                    btnCliente.classList.remove('btn-info');
+                    btnCliente.classList.add('btn-outline-secondary');
+                }
+            }
+
+            actualizarBotonCliente(); 
+
+            radiosDespacho.forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    console.log(`Opción de despacho cambiada a: ${event.target.value}`);
+                    actualizarBotonCliente(); // Actualiza el estado del botón
+                    
+                    // FUTURO: Podrías limpiar los datos de cliente si se cambia a "No"
+                });
+            });
+
+             // 1. Manejar el click del botón de pago
+            btnPagar.addEventListener('click', () => {
+                const totalVenta = parseFloat(document.getElementById('resumen-total').textContent) || 0;
+        
+                if (totalVenta <= 0) {
+                    alert('Agregue productos a la venta antes de pagar.');
+                    return;
+                }
+
+                // 1. Actualizar el total dentro del modal
+                document.getElementById('pago-total-display').textContent = `$${totalVenta.toFixed(0)}`;
+                
+                // 2. Mostrar el modal de métodos de pago (Usando jQuery de Bootstrap 4)
+                modalMetodoPago.modal('show');
+            });
+
+            const btnConfirmarPago = document.getElementById('btnConfirmarPago');
+            btnConfirmarPago.addEventListener('click', async () => {
+                // 1. Recolección de Datos Generales de la Venta
+                const subtotal = parseFloat(document.getElementById('resumen-subtotal').textContent);
+                const iva = parseFloat(document.getElementById('resumen-iva').textContent);
+                const total = parseFloat(document.getElementById('resumen-total').textContent);
+                
+                const requiereDespacho = document.getElementById('despachoSi').checked;
+                const metodoPago = document.querySelector('input[name="metodoPago"]:checked').value;
+                
+                const clienteId = window.clienteDespachoId || null;
+                
+                // 2. Creación del Objeto de Datos para enviar a Laravel
+                const datosVenta = {
+                    _token: '{{ csrf_token() }}',
+                    subtotal: subtotal,
+                    iva: iva,
+                    total: total,
+                    requiere_despacho: requiereDespacho,
+                    tipo_pago: metodoPago,
+                    cliente_despacho_id: clienteId,
+                    items: productosEnVenta
+                };
+
+                if (productosEnVenta.length === 0) {
+                    alert('No hay productos para vender.');
+                    modalMetodoPago.modal('hide');
+                    return;
+                }
+
+                // 3. Petición AJAX (Fetch) al Servidor
+                try {
+                    const response = await fetch('/venta/guardar', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/pdf, application/json' // Aceptamos PDF o JSON
+                        },
+                        body: JSON.stringify(datosVenta)
+                    });
+
+                    if (response.ok) {
+                        const contentType = response.headers.get("content-type");
+                        if (contentType && contentType.includes("application/pdf")) {
+                            // Si la respuesta es un PDF, lo abrimos para imprimir
+                            const blob = await response.blob();
+                            const pdfUrl = URL.createObjectURL(blob);
+                            window.open(pdfUrl, '_blank');
+                            
+                            // Cerramos modal y recargamos
+                            modalMetodoPago.modal('hide');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 500);
+                        } else {
+                            // Si es otro tipo de respuesta (ej. JSON), la procesamos
+                            const resultado = await response.json();
+                            alert('Venta registrada exitosamente!');
+                            console.log('Respuesta del servidor:', resultado);
+                            modalMetodoPago.modal('hide');
+                            location.reload();
+                        }
+                    } else {
+                        // Manejar errores de validación o del servidor (que devuelven JSON)
+                        const resultado = await response.json();
+                        console.error('Error del Servidor:', resultado);
+                        alert('Error al guardar la venta: ' + (resultado.message || 'Verifique los datos.'));
+                    }
+
+                } catch (error) {
+                    console.error('Error de conexión:', error);
+                    alert('Error de conexión con el servidor. Intente nuevamente.');
+                }
+            });
+            
+            const btnGuardarCliente = document.getElementById('btnGuardarCliente');
+                btnGuardarCliente.addEventListener('click', () => {
+                    const nombre = document.getElementById('nombreCliente').value;
+                    const direccion = document.getElementById('direccionCliente').value;
+                    
+                    if (nombre && direccion) {
+                        alert(`Datos de cliente guardados para despacho. Nombre: ${nombre}, Dirección: ${direccion}`);
+                        // Aquí iría la lógica para guardar en la BD o en una variable JS
+                        
+                        // Ocultar el modal (requiere JQuery o la función de Bootstrap)
+                        $('#modalClienteDespacho').modal('hide');
+                    } else {
+                        alert('Por favor, complete el nombre y la dirección.');
+                    }
+                });
+
+            // 2. Manejar el cambio en la opción de despacho (útil para futuras funciones como agregar costo de despacho)
+            radiosDespacho.forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    console.log(`Opción de despacho cambiada a: ${event.target.value}`);
+                    // FUTURO: Si el despacho tiene un costo fijo, lo agregarías aquí y llamarías a recalcularSubtotalGeneral();
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            $('#btn-cliente').on('click', function(e) {
+                e.preventDefault(); 
+                
+                // Solo mostramos el modal si el botón NO está deshabilitado
+                if (!$(this).prop('disabled')) {
+                    $('#modalClienteDespacho').modal('show');
+                }
+            });
         });
     </script>
 @stop

@@ -8,8 +8,6 @@
 
 @section('content')
     <div class="container">
-        <h1>Gestión de Productos</h1>
-        
         {{-- Botón para Crear Nuevo Producto --}}
         <div class="mb-4 text-right">
             <a href="{{ route('productos.create') }}" class="btn btn-success">
@@ -40,7 +38,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- Bucle de Blade para recorrer los productos --}}
                             @forelse ($productos as $producto)
                                 <tr>
                                     <td><strong>{{ $producto->sku }}</strong></td>
@@ -55,17 +52,10 @@
                                     <td>$ {{ number_format($producto->precio_venta, 0) }}</td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            {{-- Botón Ver --}}
-                                            <!--a href="{{ route('productos.show', $producto->id) }}" class="btn btn-sm btn-info" title="Ver">
-                                                <i class="fas fa-eye"></i>
-                                            </a-->
-                                            
-                                            {{-- Botón Editar --}}
                                             <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-sm btn-warning" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             
-                                            {{-- Botón Eliminar (Formulario DELETE) --}}
                                             <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
@@ -85,7 +75,6 @@
                     </table>
                 </div>
 
-                {{-- Paginación --}}
                 <div class="mt-3">
                     {{ $productos->links() }}
                 </div>
@@ -95,7 +84,20 @@
 @stop
 
 @section('css')
-    <style></style>
+    <style>
+        /* Solución para el tamaño de los íconos de paginación de Laravel en Bootstrap */
+        .pagination .page-link svg {
+            width: 1em;
+            height: 1em;
+        }
+
+        /* Ajuste para alinear correctamente el texto y los íconos */
+        .pagination .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 @stop
 
 @section('js')

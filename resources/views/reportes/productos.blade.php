@@ -131,15 +131,21 @@
             };
 
             const ctx = document.getElementById('topProductosChart').getContext('2d');
+        
+            // 💡 Datos pasados desde el controlador
+            const chartLabels = @json($chartData['labels']);
+            const chartValues = @json($chartData['data']);
+
+            console.log(chartLabels);
+            console.log(chartValues);
             
             const myChart = new Chart(ctx, {
                 type: 'doughnut', // Gráfico de torta (doughnut)
                 data: {
-                    labels: topProductos.nombres.slice(0, 10),
+                    labels: chartLabels,
                     datasets: [{
                         label: 'Unidades Vendidas',
-                        data: topProductos.cantidades.slice(0, 10),
-                        // Colores de ejemplo
+                        data: chartValues,
                         backgroundColor: [
                             '#85b7c9ff', '#f1959eff', '#f0c18cff', '#f7f782ff', '#7af795ff', '#8ecaf8ff', 
                             '#965169ff', '#d880d8ff', '#b5b5faff', '#ec5858ff'

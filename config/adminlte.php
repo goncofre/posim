@@ -322,6 +322,11 @@ return [
             'icon' => 'fas fa-file-alt',
         ],
         [
+            'text' => 'Packs',
+            'url' => 'packs',
+            'icon' => 'fas fa-box',
+        ],
+        [
             'text' => 'Reportes',
             'icon' => 'fas fa-chart-pie',
             'submenu' => [
@@ -347,12 +352,19 @@ return [
             'icon' => 'fas fa-cog',
             'submenu' => [
                 [
-                    'text' => 'level_one',
+                    'text' => 'Perfiles',
                     'url' => '#',
+                    'icon' => 'fas fa-users-cog'
                 ],
                 [
-                    'text' => 'level_two',
+                    'text' => 'Descuentos',
                     'url' => '#',
+                    'icon' => 'fas fa-dollar-sign'
+                ],
+                [
+                    'text' => 'Sucursales',
+                    'url' => '#',
+                    'icon' => 'fas fa-store'
                 ],
             ],
         ],
