@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ClienteDespachoController;
+use App\Http\Controllers\PackController;
+use App\Http\Controllers\SucursalController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('categorias', CategoriaController::class);
     Route::resource('users', UserController::class);
     Route::resource('clientes_despacho', ClienteDespachoController::class);
+    Route::resource('packs', PackController::class);
+    Route::resource('sucursales', SucursalController::class);
 
     Route::get('/producto/buscar', [ProductoController::class, 'buscar'])->name('productos.buscar');
     Route::post('/venta/guardar', [VentaController::class, 'store'])->name('venta.guardar');
